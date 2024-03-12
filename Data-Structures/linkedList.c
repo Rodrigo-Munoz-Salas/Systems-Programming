@@ -21,6 +21,9 @@ double average(node *head);
 int minimum(node *head);
 int maximum(node *head);
 int sizeLinkedList(node *head);
+void insertElement(node *head, int position, int value);
+void deleteElement(node *head, int position);
+void deleteLinkedList(node **head);
 
 // Main function
 int main(){
@@ -53,6 +56,21 @@ int main(){
 
     // Size of linked list
     printf("The size of the linked list  --> %d\n", sizeLinkedList(HEAD));
+
+    // Insert element
+    printf("Inserting new node with data 10 at position 1...\n");
+    insertElement(HEAD, 1, 10);
+
+    displayList(HEAD);
+
+    // Delete element
+    printf("Deleting node at position 3...\n");
+    deleteElement(HEAD, 3);
+
+    displayList(HEAD);
+
+    // Delete Linked List
+    deleteLinkedList(&HEAD);
 
     return 0;
 }
@@ -202,4 +220,51 @@ int sizeLinkedList(node *head){
     }
 
     return size;
+}
+
+void insertElement(node *head, int position, int value){
+    node* new_node = (node*)malloc(sizeof(node));
+    new_node->data = value;
+    node* curr = (node*)malloc(sizeof(node));
+    curr = head;
+    node* prev = NULL;
+    
+    for(int i=0; i<position; i++){
+        prev = curr;
+        curr = curr->next;
+    }
+
+    prev->next = new_node;
+    new_node->next = curr;
+}
+
+void deleteElement(node* head, int position){
+    node* curr = (node*)malloc(sizeof(node));
+    curr = head;
+    node* prev = NULL;
+    node* next = curr->next;
+    int curr_pos = 0;
+
+    while(curr_pos != position){
+        prev = curr;
+        curr = curr->next;
+        next = curr->next;
+        curr_pos++;
+    }
+
+    prev->next = next;
+    free(curr);
+}
+
+void deleteLinkedList(node **head){
+    node* curr = *head;
+    node* next;
+
+    while(curr){
+        next = curr->next;
+        free(curr);
+        curr = next;
+    }
+
+    *head = NULL;
 }
